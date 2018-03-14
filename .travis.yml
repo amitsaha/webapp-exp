@@ -1,0 +1,18 @@
+# This gives us full control over what we intend to do
+# in the job
+language: minimal
+# Needed for docker
+sudo: required
+services:
+  - docker
+addons:
+  apt:
+    packages:
+      - docker-ce
+script:
+  - ./build.sh
+after_success:
+  - if [ "$TRAVIS_BRANCH" == "master" ]; then
+    docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD";
+    docker push amitsaha/webapp;
+    fi
