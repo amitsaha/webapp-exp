@@ -1,0 +1,65 @@
+stages:
+  - test
+  - build
+  - deploy
+
+variables:
+  DOCKER_TLS_VERIFY: 1
+  DOCKER_HOST: "tcp://192.168.39.211:2376"
+  DOCKER_CERT_PATH: "/home/amit/.minikube/certs"
+
+test:
+  stage: test
+  script: echo "Running tests"
+
+build:
+  stage: build
+  script:
+    - echo "Building image"
+    - docker build -t test/nginx .
+    - docker images
+
+deploy_review:
+  stage: deploy
+  script:
+    - echo "Deploy for feature branch"
+    - export KUBE_SERVICE_ACCOUNT="deployer"
+    - export KUBE_NAMESPACE=${CI_ENVIRONMENT_SLUG}
+    - env
+    - kubectl create namespace ${KUBE_NAMESPACE} || true
+    - kubectl apply -f k.yaml --namespace ${KUBE_NAMESPACE}
+    - bash ingress-feature.bash | kubectl apply -f -
+  environment:
+    name: review/$CI_COMMIT_REF_NAME
+    url: http://$CI_ENVIRONMENT_SLUG.test-nginx.info
+  only:
+    - branches
+  except:
+    - develop
+    - master
+
+deploy_staging:
+  stage: deploy
+  script:
+    - echo "Deploy to staging server"
+  environment:
+    name: staging
+    url: https://staging.example.com
+  only:
+  - develop
+
+deploy_prod:
+  stage: deploy
+  script:
+    - echo "Deploy to production server"
+    - env
+    - export KUBE_SERVICE_ACCOUNT="gitlab-ci"
+    - kubectl create namespace ${KUBE_NAMESPACE} || true
+    - kubectl apply -f k.yaml --namespace ${KUBE_NAMESPACE}
+    - kubectl apply -f ingress-master.yaml
+  environment:
+    name: production
+    url: http://test-nginx.info
+  when: manual
+  only:
+  - master

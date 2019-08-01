@@ -1,0 +1,21 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: webapp-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    kubernetes/ingress.class: nginx
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+spec:
+  tls:
+  - hosts:
+    - "test-webapp.info"
+    secretName: webapp-tls
+  rules:
+  - host: test-webapp.info
+    http:
+      paths:
+      - path: /*
+        backend:
+          serviceName: webappsvc
+          servicePort: 8080

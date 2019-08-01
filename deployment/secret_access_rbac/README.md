@@ -1,0 +1,6 @@
+- Create namespace myapp
+- Create secret, mysecret
+- Create service account, myapp
+- Create RBAC to allow readonly access to the secret from myapp
+- Run pod with `amitsaha/nignx` with service account `myapp`
+- Access secret

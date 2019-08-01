@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: myapp
+  namespace: myapp
+automountServiceAccountToken: false
+---
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: myapp
+rules:
+- apiGroups: ["*"]
+  resources: ["secret"]
+  verbs: ["get", "list"]
+---
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: RoleBinding
+metadata:
+  name: myapp-role-binding
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: myapp
+subjects:
+- kind: ServiceAccount
+  name: myapp
+  namespace: myapp
