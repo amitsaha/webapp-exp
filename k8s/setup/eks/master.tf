@@ -45,7 +45,7 @@ resource "aws_security_group" "cluster" {
 }
 
 resource "aws_security_group_rule" "cluster-ingress-workstation-https" {
-  cidr_blocks       = "${var.ssh_access_ip}"
+  cidr_blocks       = "${var.private_access_ip}"
   description       = "Allow local workstation to communicate with the cluster API Server"
   from_port         = 443
   protocol          = "tcp"
