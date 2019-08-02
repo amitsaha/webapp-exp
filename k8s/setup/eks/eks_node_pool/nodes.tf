@@ -92,7 +92,7 @@ resource "aws_security_group_rule" "node-ingress-ssh" {
   from_port         = 22
   protocol          = "tcp"
   security_group_id = "${aws_security_group.node.id}"
-  cidr_blocks       = ["10.0.56.0/21"]                           // vpn sydney
+  cidr_blocks       = "${var.private_access_ip}"
   to_port           = 22
   type              = "ingress"
 }
@@ -165,29 +165,6 @@ resource "aws_autoscaling_group" "nodes" {
     value               = "owned"
     propagate_at_launch = true
   }
-}
-
-locals {
-  config_map_aws_auth = <<CONFIGMAPAWSAUTH
-
-
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: aws-auth
-  namespace: kube-system
-data:
-  mapRoles: |
-    - rolearn: ${aws_iam_role.node.arn}
-      username: system:node:{{EC2PrivateDNSName}}
-      groups:
-        - system:bootstrappers
-        - system:nodes
-CONFIGMAPAWSAUTH
-}
-
-output "config_map_aws_auth" {
-  value = "${local.config_map_aws_auth}"
 }
 
 output "node_security_group_id" {
