@@ -12,4 +12,5 @@ urlpatterns = [
     url(r'^post/(?P<post_id>\d+)/$', views.show_post, name='show-post'),
     url(r'^tag/(?P<tag>\w+)/$', views.tag_view, name='tag-view'),
     url(r'^signup/$', views.signup, name='signup'),
+    url(r'^honeypot/$', views.honeypot, name='honeypot'),
 ]

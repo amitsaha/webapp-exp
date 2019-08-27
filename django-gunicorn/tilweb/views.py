@@ -24,6 +24,10 @@ def index(request):
         return HttpResponseRedirect('/me/')
 
 
+def honeypot(request):
+    raise Exception('LOL')
+
+
 def me(request):
     if request.user.is_authenticated:
         latest_posts = Post.objects.order_by('-post_date')
