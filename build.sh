@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 pushd golang/basic
 docker build -t amitsaha/webapp-demo:golang .
