@@ -14,9 +14,9 @@ docker build -t amitsaha/webapp-demo:python-django .
 popd
 
 pushd nginx/basic
-docker build -t amitsaha/nginx:basic
+docker build -t amitsaha/nginx:basic .
 popd
 
 pushd nginx/python-gunicorn
-docker build -t amitsaha/nginx:gunicorn
+docker build -t amitsaha/nginx:gunicorn .
 popd
