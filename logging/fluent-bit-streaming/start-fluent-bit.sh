@@ -1,1 +1,1 @@
-td-agent-bit -c ./fluent-bit.conf 
+fluent-bit -c ./fluent-bit.conf 
