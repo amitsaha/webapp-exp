@@ -14,6 +14,11 @@ pushd python/django-gunicorn
 docker build -t amitsaha/webapp-demo:python-django .
 popd
 
+pushd python/flask-gunicorn
+docker build -t amitsaha/webapp-demo:python-flask .
+popd
+
+
 pushd nginx/basic
 docker build -t amitsaha/nginx:basic .
 popd
@@ -21,3 +26,4 @@ popd
 pushd nginx/python-gunicorn
 docker build -t amitsaha/nginx:gunicorn .
 popd
+
