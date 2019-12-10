@@ -65,9 +65,11 @@ func main() {
 	// specified
 	listenAddr := os.Getenv("LISTEN_ADDRESS")
 	if listenAddr == "" {
-		listenAddr = ":8080"
+		listenAddr = ":8443"
+		log.Printf("No LISTEN_ADDRESS specified. Listening on: %s\n", listenAddr)
+	} else {
+		log.Printf("Listening on: %s\n", listenAddr)
 	}
-	log.Printf("No LISTEN_ADDRESS specified. Listening on: %s\n", listenAddr)
 
 	// nil argument here specifies using the DefaultServeMux
 	log.Fatal(http.ListenAndServeTLS(listenAddr, "server.crt", "server.key", nil))
