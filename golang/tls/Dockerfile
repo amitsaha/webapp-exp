@@ -7,7 +7,5 @@ RUN go build && mv app /app
 RUN groupadd -g 1000 -r application && useradd --no-log-init -u 1000 -g application application
 
 COPY app.sh /app.sh
-# Allow binding to privileged ports
-RUN setcap 'cap_net_bind_service=+ep' /app
 USER 1000
 CMD ["/app.sh"]
