@@ -2,5 +2,6 @@ FROM golang:1.12
 WORKDIR /go/src/app
 COPY . .
 RUN go build && mv app /app
-USER nobody
+RUN groupadd -r application && useradd --no-log-init -r -g application application
+USER application
 CMD ["/app"]
